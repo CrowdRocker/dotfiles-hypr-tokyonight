@@ -1,0 +1,17 @@
+(:window
+  :name "gamelauncher"
+  :stacking "above"
+  :exclusive true
+  :monitor 0
+  :geometry (:width "30%" :height "60%" :x "35%" :y "20%")
+  :class "gamelauncher"
+  (:box
+    :class "bg"
+    :orientation "v"
+    (:button :onclick "exec:steam" "🎮 Steam")
+    (:button :onclick "exec:lutris" "🕹️ Lutris")
+    (:button :onclick "exec:heroic" "🎯 Heroic")
+    (:button :onclick "exec:spotify" "🎵 Spotify")
+    (:button :onclick "exec:eww close gamelauncher" "❌ Close")
+  )
+)

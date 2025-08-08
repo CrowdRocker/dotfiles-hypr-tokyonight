@@ -1,0 +1,18 @@
+(:window
+  :name "powermenu"
+  :stacking "above"
+  :exclusive true
+  :monitor 0
+  :geometry (:width "20%" :height "60%" :x "60%" :y "20%")
+  :class "powermenu"
+  (:box
+    :class "bg"
+    :orientation "v"
+    (:button :onclick "exec:hyprlock" "🔒 Lock")
+    (:button :onclick "exec:systemctl suspend" "🌙 Sleep")
+    (:button :onclick "exec:rofi -show power-menu" "🛑 Logout")
+    (:button :onclick "exec:sudo reboot" "🔁 Reboot")
+    (:button :onclick "exec:sudo shutdown now" "⛔ Shutdown")
+    (:button :onclick "exec:eww close powermenu" "❌ Close")
+  )
+)

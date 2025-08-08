@@ -1,12 +1,14 @@
 #!/bin/bash
-# install.sh - Full Hyprland + TokyoNight Setup for Matt (Crowdrocker)
+# install.sh - Crowdrocker's TokyoNight Hyprland Setup
+# For: Gaming, Streaming, Photography, and Style
+# Inspired by JaKooLit & ML4W | Credit: https://github.com/JaKooLit, https://github.com/ML4W
 
-echo "🚀 Installing Matt's TokyoNight Hyprland Setup..."
+echo "🚀 Installing Crowdrocker's TokyoNight Hyprland Setup..."
 
-# === 1. Update & Install Base ===
+# === 1. Update System ===
 sudo pacman -Syu --noconfirm
 
-# Essential tools
+# === 2. Install Core Tools ===
 sudo pacman -S --noconfirm \
     git base-devel neofetch fastfetch htop btop zsh \
     xdg-user-dirs xdg-utils polkit-gnome \
@@ -17,15 +19,17 @@ sudo pacman -S --noconfirm \
     thunar thunar-archive-plugin gvfs \
     bluez bluez-utils blueman \
     ntfs-3g dosfstools \
-    grub-customizer
+    grub-customizer \
+    alacritty
 
-# === 2. Install AUR Helper (yay) ===
+# === 3. Install AUR Helper (yay) ===
 cd /tmp
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
+cd ~
 
-# === 3. Install Hyprland & Tools ===
+# === 4. Install Hyprland & Tools ===
 yay -S --noconfirm \
     hyprland \
     waybar-hyprland-git \
@@ -41,48 +45,42 @@ yay -S --noconfirm \
     azote \
     eww-wayland
 
-# === 4. Enable Services ===
+# === 5. Enable Services ===
 sudo systemctl enable sddm bluetooth pipewire wireplumber
 
-# === 5. Clone Your Dotfiles ===
-cd ~
-git clone https://github.com/Crowdrocker/dotfiles-hypr-tokyonight.git .dotfiles
-mkdir -p ~/.config
+# === 6. Clone Dotfiles ===
+git clone https://github.com/Crowdrocker/dotfiles-hypr-tokyonight.git ~/.dotfiles
 
-# === 6. Symlink Configs ===
+# === 7. Create Config Symlinks ===
+mkdir -p ~/.config
 ln -sf ~/.dotfiles/config/hypr ~/.config/hypr
 ln -sf ~/.dotfiles/config/waybar ~/.config/waybar
 ln -sf ~/.dotfiles/config/rofi ~/.config/rofi
 ln -sf ~/.dotfiles/config/eww ~/.config/eww
 ln -sf ~/.dotfiles/config/azote ~/.config/azote
-ln -sf ~/.dotfiles/config/starship.toml ~/.config/starship.toml
 ln -sf ~/.dotfiles/config/gtk-3.0 ~/.config/gtk-3.0
 ln -sf ~/.dotfiles/config/mako ~/.config/mako
+ln -sf ~/.dotfiles/config/starship.toml ~/.config/starship.toml
 
-# === 7. Set ZSH as Default Shell ===
-chsh -s /bin/zsh
-
-# === 8. Copy SDDM Theme ===
-sudo mkdir -p /usr/share/sddm/themes/sugarcandy
-sudo cp -r ~/.dotfiles/sddm/sugarcandy/* /usr/share/sddm/themes/sugarcandy/
-sudo cp ~/.dotfiles/sddm/sddm.conf /etc/
-
-# === 9. GRUB Theme (Optional) ===
-# Use grub-customizer or manual theme
-# Place TokyoNight GRUB theme in /boot/grub/themes/tokyonight
-
-# === 10. Copy Scripts & Make Executable ===
+# === 8. Scripts Setup ===
 mkdir -p ~/scripts
 cp -r ~/.dotfiles/scripts/* ~/scripts/
 chmod +x ~/scripts/*.sh
 
-# === 11. Install TokyoNight GTK Theme ===
+# === 9. SDDM Theme ===
+sudo mkdir -p /usr/share/sddm/themes/sugarcandy
+sudo cp -r ~/.dotfiles/themes/sugarcandy/* /usr/share/sddm/themes/sugarcandy/
+sudo cp ~/.dotfiles/config/sddm/sddm.conf /etc/
+
+# === 10. GTK Theme: TokyoNight Storm Dark ===
 git clone https://github.com/folke/tokyonight-gtk.nvim.git /tmp/tokyonight-gtk
-sudo cp -r /tmp/tokyonight-gtk/tokyonight-storm-dark ~/.themes/
-nwg-look -t ~/.themes/tokyonight-storm-dark
+sudo cp -r /tmp/tokyonight-gtk/tokyonight-storm-dark /usr/share/themes/
+nwg-look -t tokyonight-storm-dark
 
-# === 12. Set Default Terminal Colors (xfce4-terminal) ===
-# Or switch to Alacritty (faster, better for Wayland)
-# Config provided in dotfiles
+# === 11. Set ZSH & Starship ===
+chsh -s /bin/zsh
+echo 'eval "$(starship init zsh)"' >> ~/.zshrc
 
-echo "✅ Setup complete! Reboot to start."
+# === 12. Launch Eww on Startup (add to Hyprland later) ===
+echo "✅ Installation complete! Reboot and enjoy."
+echo "💡 First boot: Run 'nwg-look' to confirm theme, and 'azote' for wallpaper."

@@ -1,0 +1,30 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "FiraCode Nerd Font", sans-serif;
+    font-size: 13px;
+}
+
+#nwg-drawer { color: #bb9af7; } /* Pink */
+#workspaces button { color: #c0caf5; }
+#workspaces button.focused { color: #7aa2f7; background: #292e3f; }
+
+#clock, #cpu, #memory, #disk, #temperature, #battery, #bluetooth, #pulseaudio, #network {
+    padding: 0 10px;
+    margin: 0 2px;
+    color: #c0caf5;
+    background: #292e3f;
+    border-radius: 6px;
+}
+
+#battery.critical { color: #f7768e; } /* Red */
+#custom-gamelauncher, #custom-power { color: #9d7cd8; } /* Purple */
+#pulseaudio { color: #9ece6a; } /* Green */
+#network { color: #7aa2f7; } /* Blue */
+
+window#waybar {
+    background: #1a1b2680; /* TokyoNight base + alpha */
+    color: #c0caf5;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+}

@@ -1,7 +1,11 @@
-"modules-left": ["nwg-drawer", "hyprland/workspaces"],
-"modules-center": ["hyprland/window"],
-"modules-right": [
-    "custom/game-launcher",
+{
+  "layer": "top",
+  "position": "top",
+  "height": 32,
+  "modules-left": ["nwg-drawer", "hyprland/workspaces"],
+  "modules-center": ["hyprland/window"],
+  "modules-right": [
+    "custom/gamelauncher",
     "pulseaudio",
     "network",
     "cpu",
@@ -12,8 +16,27 @@
     "battery",
     "clock",
     "custom/power"
-]
-"nwg-drawer": {
-    "icon": "arch",
-    "wrapping": true
+  ],
+  "hyprland/workspaces": {
+    "all-outputs": true
+  },
+  "clock": {
+    "format": "{:%I:%M %p}"
+  },
+  "custom/gamelauncher": {
+    "format": "🎮",
+    "tooltip": false,
+    "on-click": "eww open gamelauncher"
+  },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "eww open powermenu"
+  },
+  "cpu": { "format": " {usage}%" },
+  "memory": { "format": " {percentage}%" },
+  "disk": { "format": " {percentage}%", "path": "/" },
+  "temperature": { "format": " {temperature}°C", "critical-threshold": 80 },
+  "battery": { "format": "{icon} {percentage}%", "format-icons": ["", "", "", "", ""] },
+  "bluetooth": { "format": "" }
 }
