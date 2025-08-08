@@ -27,11 +27,11 @@
 ## 🛠️ Install
 
 ```bash
-git clone https://github.com/Crowdrocker/dotfiles-hypr-tokyonight.git
-cd dotfiles-hypr-tokyonight
-chmod +x install.sh
-./install.sh
+git clone https://github.com/Crowdrocker/dotfiles-hypr-tokyonight.git ~/.dotfiles
+~/.dotfiles/install.sh
 
+Reboot and enjoy! 
+ 
 🧩 Credits 
 
 Inspired by: 
@@ -42,9 +42,10 @@ Inspired by:
 
 Forked and customized by @Crowdrocker for personal use. 
  
-📸 Business: WehttamSnaps 
+📸 Business: WehttamSnaps  
 🎮 Streaming: Twitch  
 💻 GitHub: @Crowdrocker  
  
 
-    ✨ Built with love, Linux, and a passion for pixels.
+    ✨ Built with love, Linux, and a passion for pixels. 
+     
