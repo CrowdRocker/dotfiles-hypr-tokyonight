@@ -1,0 +1,19 @@
+"modules-left": ["nwg-drawer", "hyprland/workspaces"],
+"modules-center": ["hyprland/window"],
+"modules-right": [
+    "custom/game-launcher",
+    "pulseaudio",
+    "network",
+    "cpu",
+    "memory",
+    "disk",
+    "temperature",
+    "bluetooth",
+    "battery",
+    "clock",
+    "custom/power"
+]
+"nwg-drawer": {
+    "icon": "arch",
+    "wrapping": true
+}
