@@ -5,7 +5,7 @@
     font-size: 13px;
 }
 
-#nwg-drawer { color: #bb9af7; } /* Pink */
+#nwg-drawer { color: #bb9af7; }
 #workspaces button { color: #c0caf5; }
 #workspaces button.focused { color: #7aa2f7; background: #292e3f; }
 
@@ -17,14 +17,12 @@
     border-radius: 6px;
 }
 
-#battery.critical { color: #f7768e; } /* Red */
-#custom-gamelauncher, #custom-power { color: #9d7cd8; } /* Purple */
-#pulseaudio { color: #9ece6a; } /* Green */
-#network { color: #7aa2f7; } /* Blue */
+#battery.critical { color: #f7768e; }
+#custom-gamelauncher, #custom-power { color: #9d7cd8; }
+#pulseaudio { color: #9ece6a; }
+#network { color: #7aa2f7; }
 
 window#waybar {
-    background: #1a1b2680; /* TokyoNight base + alpha */
+    background: #1a1b2680;
     color: #c0caf5;
-    transition-property: background-color;
-    transition-duration: 0.2s;
 }

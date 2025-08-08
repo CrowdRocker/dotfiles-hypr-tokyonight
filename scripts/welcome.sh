@@ -1,9 +1,9 @@
 #!/bin/bash
-rofi -dmenu -p "✨ Welcome, Matt!" -config ~/.config/rofi/config.rasi << EOF | sh &
+rofi -dmenu -p "✨ Welcome, Matt!" << EOF | sh &
 🔧 Open Settings
 🎨 Change Theme
 🎮 Launch Games (Eww)
-📸 Open Darktable / GIMP
+📸 Open Darktable
 📊 System Info (btop)
 🎵 Spotify
 ⏹️ Power Menu

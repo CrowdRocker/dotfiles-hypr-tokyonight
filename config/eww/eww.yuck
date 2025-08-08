@@ -1,0 +1,4 @@
+(;
+  (include "widgets/gamelauncher.yml")
+  (include "widgets/powermenu.yml")
+;)

@@ -16,3 +16,4 @@
     (:button :onclick "exec:eww close powermenu" "❌ Close")
   )
 )
+)

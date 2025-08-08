@@ -17,12 +17,8 @@
     "clock",
     "custom/power"
   ],
-  "hyprland/workspaces": {
-    "all-outputs": true
-  },
-  "clock": {
-    "format": "{:%I:%M %p}"
-  },
+  "hyprland/workspaces": { "all-outputs": true },
+  "clock": { "format": "{:%I:%M %p}" },
   "custom/gamelauncher": {
     "format": "🎮",
     "tooltip": false,
@@ -37,6 +33,5 @@
   "memory": { "format": " {percentage}%" },
   "disk": { "format": " {percentage}%", "path": "/" },
   "temperature": { "format": " {temperature}°C", "critical-threshold": 80 },
-  "battery": { "format": "{icon} {percentage}%", "format-icons": ["", "", "", "", ""] },
-  "bluetooth": { "format": "" }
+  "battery": { "format": "{icon} {percentage}%", "format-icons": ["", "", "", "", ""] }
 }
