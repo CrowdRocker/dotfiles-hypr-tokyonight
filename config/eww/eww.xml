@@ -1,8 +1,0 @@
-<eww:window name="gamelauncher" monitor="0">
-  <box>
-    <button onclick="exec:steam">🎮 Steam</button>
-    <button onclick="exec:lutris">🕹️ Lutris</button>
-    <button onclick="exec:heroic">🎯 Heroic</button>
-    <button onclick="exec:spotify">🎵 Spotify</button>
-  </box>
-</eww:window>
