@@ -1,0 +1,349 @@
+
+
+#!/bin/bash
+cd ~
+echo "🏗️ Creating dotfiles-hypr-tokyonight structure..."
+
+cd ~ && mkdir -p dotfiles-hypr-tokyonight && cd dotfiles-hypr-tokyonight && mkdir -p config/{hypr,waybar,eww,rofi} scripts sddm assets/wallpapers && touch config/hypr/hyprland.conf config/waybar/{config,style.css} config/eww/{eww.xml,eww.scss} config/rofi/welcome.rasi scripts/{welcome.sh,settings.sh,theme-switch.sh} install.sh README.md && echo '🎉 Folder structure created! Now pasting content...' && curl -sSL https://raw.githubusercontent.com/Crowdrocker/dotfiles-hypr-tokyonight-template/main/generate.sh | bash && echo "✅ All files generated! Run 'git init && git add . && git commit -m \"Initial commit\"' to start." || echo "Failed to generate files."
+
+# Create directories
+mkdir -p ~/dotfiles-hypr-tokyonight
+cd ~/dotfiles-hypr-tokyonight
+
+mkdir -p config/{hypr,waybar,eww,rofi} scripts assets/wallpapers sddm
+
+# === install.sh ===
+cat > install.sh << 'EOF'
+#!/bin/bash
+echo "🚀 Installing Crowdrocker's TokyoNight Hyprland Setup..."
+
+# Update
+sudo pacman -Syu --noconfirm
+
+# Essentials
+sudo pacman -S --noconfirm git base-devel neofetch fastfetch zsh xdg-user-dirs \
+    pipewire pipewire-pulse wireplumber pavucontrol \
+    ttf-nerd-fonts-symbols noto-fonts-emoji \
+    grim slurp wl-clipboard mako \
+    thunar thunar-archive-plugin gvfs \
+    bluez bluez-utils blueman \
+    ntfs-3g dosfstools grub-customizer
+
+# AUR Helper
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si --noconfirm
+
+# Hyprland & Tools
+yay -S --noconfirm \
+    hyprland \
+    waybar-hyprland-git \
+    rofi-lbonn-wayland-git \
+    nwg-look \
+    sddm-sugar-candy-git \
+    gamescope \
+    gamemode \
+    eww-wayland \
+    azote \
+    starship \
+    fastfetch \
+    zram-generator
+
+# Enable Services
+sudo systemctl enable sddm bluetooth pipewire{,-pulse,-jack} wireplumber
+
+# Dotfiles
+mkdir -p ~/.config
+cp -r ~/dotfiles-hypr-tokyonight/config/* ~/.config/
+cp -r ~/dotfiles-hypr-tokyonight/scripts ~/scripts
+chmod +x ~/scripts/*.sh
+
+# Starship
+mkdir -p ~/.config
+starship init zsh > ~/.config/starship.toml
+
+# SDDM Theme (sugarcandy)
+sudo mkdir -p /usr/share/sddm/themes/sugarcandy
+echo "💡 Next: Download sugarcandy theme from https://github.com/EliverLara/sddm-sugar-candy"
+echo "💡 Copy it into /usr/share/sddm/themes/sugarcandy"
+
+# ZSH
+chsh -s /bin/zsh
+
+echo "✅ Setup complete! Reboot and enjoy."
+EOF
+
+# === waybar/config ===
+cat > config/waybar/config << 'EOF'
+{
+  "layer": "top",
+  "position": "top",
+  "height": 32,
+  "spacing": 4,
+  "margin": "4px 8px",
+  "modules-left": ["nwg-drawer", "hyprland/workspaces"],
+  "modules-center": ["hyprland/window"],
+  "modules-right": [
+    "custom/game-launcher",
+    "pulseaudio",
+    "network",
+    "cpu",
+    "memory",
+    "disk",
+    "temperature",
+    "bluetooth",
+    "battery",
+    "clock",
+    "custom/power"
+  ],
+  "nwg-drawer": {
+    "icon": "arch",
+    "wrapping": true
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate"
+  },
+  "hyprland/window": {
+    "max-length": 60,
+    "ellipsis": true
+  },
+  "cpu": {
+    "format": " {usage}%",
+    "interval": 2
+  },
+  "memory": {
+    "format": " {used:0.1f}G",
+    "interval": 3
+  },
+  "disk": {
+    "path": "/",
+    "format": " {used}/{total} ({percentage}%)",
+    "interval": 60
+  },
+  "temperature": {
+    "thermal-zone": 0,
+    "format": " {temperature}°C",
+    "warn-temperature": 70,
+    "interval": 10
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-bluetooth": " {icon} {volume}%",
+    "format-muted": "🔇",
+    "icons": ["", "", ""]
+  },
+  "network": {
+    "format": " {ifname} {ipaddr}",
+    "format-disconnected": "⚠ No Network",
+    "tooltip-format": "{ifname}: {ipaddr}"
+  },
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "clock": {
+    "format": " {:%H:%M}",
+    "tooltip-format": "<b> {:%A, %B %d}</b>"
+  },
+  "custom/power": {
+    "format": "⏻",
+    "on-click": "eww open powermenu"
+  },
+  "custom/game-launcher": {
+    "format": "🎮",
+    "on-click": "eww open gamelauncher"
+  },
+  "css": "style.css"
+}
+EOF
+
+# === waybar/style.css ===
+cat > config/waybar/style.css << 'EOF'
+* {
+  font-family: "FiraCode Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+  font-size: 13px;
+}
+
+#nwg-drawer, #custom-game-launcher, #custom-power,
+#cpu, #memory, #disk, #temperature, #pulseaudio,
+#network, #battery, #clock, #bluetooth {
+  padding: 0 8px;
+  margin: 0;
+  background: #1a1b26;
+  color: #c0caf5;
+  border-radius: 6px;
+  border: 1px solid #292e3d;
+}
+
+#custom-game-launcher:hover,
+#custom-power:hover {
+  background: #7aa2f7;
+  color: #1a1b26;
+  font-weight: bold;
+}
+
+#cpu { color: #7aa2f7; }
+#memory { color: #bb9af7; }
+#disk { color: #9d7cd8; }
+#temperature { color: #e0af68; }
+#pulseaudio { color: #9ece6a; }
+#battery { color: #f7768e; }
+
+#clock { font-weight: bold; }
+
+#hyprland-workspaces button {
+  padding: 0 8px;
+  margin: 0 2px;
+  background: #292e3d;
+  color: #a9b1d6;
+  border-radius: 6px;
+}
+
+#hyprland-workspaces button.focused {
+  background: #7aa2f7;
+  color: #1a1b26;
+  font-weight: bold;
+}
+
+#hyprland-window {
+  color: #c0caf5;
+  font-weight: 500;
+}
+EOF
+
+# === eww.xml ===
+cat > config/eww/eww.xml << 'EOF'
+<eww:window name="gamelauncher" monitor="0">
+  <box class="box">
+    <button onclick="exec:steam">🎮 Steam</button>
+    <button onclick="exec:lutris">🕹️ Lutris</button>
+    <button onclick="exec:heroic">🎯 Heroic</button>
+    <button onclick="exec:spotify">🎵 Spotify</button>
+    <button onclick="exec:cyberpunk2077">🌆 Cyberpunk 2077</button>
+    <button onclick="exec:thedivision">🛡️ The Division</button>
+    <button onclick="close:gamelauncher">❌ Close</button>
+  </box>
+</eww:window>
+
+<eww:window name="powermenu" monitor="0">
+  <box class="box">
+    <button onclick="exec:hyprlock">🔒 Lock</button>
+    <button onclick="exec:loginctl terminate-session $XDG_SESSION_ID">🚪 Logout</button>
+    <button onclick="exec:systemctl suspend">🌙 Sleep</button>
+    <button onclick="exec:reboot">🔄 Reboot</button>
+    <button onclick="exec:shutdown now">⏹️ Shutdown</button>
+    <button onclick="close:powermenu">❌ Cancel</button>
+  </box>
+</eww:window>
+EOF
+
+# === eww.scss ===
+cat > config/eww/eww.scss << 'EOF'
+$bg: #1a1b26;
+$text: #c0caf5;
+$blue: #7aa2f7;
+$pink: #bb9af7;
+$purple: #9d7cd8;
+
+window {
+  background-color: $bg;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.box {
+  spacing: 12px;
+}
+
+.button {
+  padding: 10px 20px;
+  background: #292e3d;
+  color: $text;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.button:hover {
+  background: $blue;
+  color: #1a1b26;
+  font-weight: bold;
+  transform: translateY(-2px);
+}
+
+.button:nth-child(2):hover { background: $pink; }
+.button:nth-child(3):hover { background: $purple; }
+EOF
+
+# === scripts/welcome.sh ===
+cat > scripts/welcome.sh << 'EOF'
+#!/bin/bash
+option=$(echo -e "🔧 Settings\n🎨 Theme Switch\n🎮 Game Launcher\n📊 System Info\n🎵 Spotify\n⏹️ Power Menu\n❌ Cancel" | \
+rofi -dmenu -p "Welcome, Matt!" -config ~/.config/rofi/config.rasi)
+
+case $option in
+  "🔧 Settings") ~/scripts/settings.sh ;;
+  "🎨 Theme Switch") ~/scripts/theme-switch.sh ;;
+  "🎮 Game Launcher") eww open gamelauncher ;;
+  "📊 System Info") fastfetch | tee >(rofi -dmenu -p "System Info") > /dev/null ;;
+  "🎵 Spotify") exec spotify ;;
+  "⏹️ Power Menu") eww open powermenu ;;
+  *) exit 0 ;;
+esac
+EOF
+
+# === scripts/settings.sh ===
+cat > scripts/settings.sh << 'EOF'
+#!/bin/bash
+echo -e "🌐 Network Tools\n🎮 Toggle Gamemode\n🔊 Audio Settings (pavucontrol)\n🎨 GTK Theme (nwg-look)\n📄 File Manager (Thunar)" | \
+rofi -dmenu -p "Settings" | sh -c "$(cat)"
+EOF
+
+# === scripts/theme-switch.sh ===
+cat > scripts/theme-switch.sh << 'EOF'
+#!/bin/bash
+selected=$(echo -e "tokyonight-storm-dark\ntokyonight-night\ntokyonight-day" | rofi -dmenu -p "Choose Theme")
+if [ "$selected" ]; then
+  nwg-look -t ~/.themes/\$selected
+  killall waybar && waybar &
+fi
+EOF
+
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# === README.md ===
+cat > README.md << 'EOF'
+# dotfiles-hypr-tokyonight
+
+TokyoNight-themed Hyprland setup for @Crowdrocker (Matt)
+
+🎨 Inspired by JaKooLit & ML4W
+🎮 Gamer + Photographer + Streamer
+💙 Pink/Purple/Blue Theme
+🔧 Eww, Waybar, Rofi, Azote, Gamemode
+
+## Install
+
+1. Clone repo
+2. Run \`./install.sh\`
+3. Reboot
+
+---
+
+> Credit to JaKooLit and ML4W for inspiration and community.
+EOF
+
+echo "✅ All files generated in ~/dotfiles-hypr-tokyonight"
+echo "📦 Now run:"
+echo "   cd ~/dotfiles-hypr-tokyonight"
+echo "   git init && git add . && git commit -m 'Initial commit'"
+echo "   git remote add origin https://github.com/Crowdrocker/dotfiles-hypr-tokyonight.git"
+echo "   git push -u origin main"
+
+
